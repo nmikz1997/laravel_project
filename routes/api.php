@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProjectsController;
+use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResources([
-    'products' => ProductController::class
+    'products' => ProductController::class,
+    'categories' => CategoryController::class,
+    'projects' => ProjectsController::class
 ]);
+
+Route::get('hello', function() {
+    return 'hello';
+});

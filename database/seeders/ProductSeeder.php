@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 use Faker;
@@ -17,7 +16,7 @@ class ProductSeeder extends Seeder
             DB::table('products')->insert([
                 'name' => $faker->catchPhrase,
                 'content' => $faker->realText,
-                'category_id' => 1,
+                'category_id' => $faker->numberBetween(1, 9),
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);

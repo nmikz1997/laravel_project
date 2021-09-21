@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Traits;
+namespace App\Services\Traits;
 
 trait Relationable
 {
@@ -9,5 +9,6 @@ trait Relationable
     public function setRelations($relations = null)
     {
         $this->relations = $relations;
+        return $this;
     }
 }

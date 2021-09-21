@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Services\Traits\Relationable;
 use App\Services\Traits\HandleExceptionMessage;
-use Illuminate\Database\Eloquent\Model;
 use App\Services\Traits\Sortable;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -12,24 +14,28 @@ abstract class BaseService
 {
     use Sortable;
     use HandleExceptionMessage;
-    
-    public $sortBy = 'created_at';
-    public $sortOrder = 'asc';
-    public array $relations = [];
+    use Relationable;
+
     protected Model $model;
 
     public function all()
     {
-        return $this->model
-            ->with($this->relations)
+        $model = $this->model;
+        if (!empty($this->relations)) {
+            $model->with($this->relations);
+        }
+        return $model
             ->orderBy($this->sortBy, $this->sortOrder)
             ->get();
     }
 
     public function paginated($paginate)
     {
-        return $this->model
-            ->with($this->relations)
+        $model = $this->model;
+        if (!empty($this->relations)) {
+            $model->with($this->relations);
+        }
+        return $model
             ->orderBy($this->sortBy, $this->sortOrder)
             ->paginate($paginate);
     }
@@ -46,11 +52,19 @@ abstract class BaseService
     public function find($id)
     {
         try {
-            $object = $this->model->findOrFail($id);
+            $model = $this->model;
+            if (!empty($this->relations)) {
+                $model->with($this->relations);
+            }
+            $object = $model->findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return $this::notFound($e->getMessage());
         }
         return $object;
+    }
+
+    public function children($id) {
+        return $this->find($id)->children;
     }
 
     public function update(FormRequest $input, $id)
@@ -64,6 +78,7 @@ abstract class BaseService
 
     public function destroy($id)
     {
+        dd("dang phat trien");
         return $this->find($id)->delete();
     }
 }

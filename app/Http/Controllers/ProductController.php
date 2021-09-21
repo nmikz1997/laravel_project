@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use App\Services\Product\ProductService;
 
@@ -27,7 +26,9 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        return $this->productService->find($id);
+        return $this->productService
+                    ->setRelations(['category'])
+                    ->find($id);
     }
 
     public function update(ProductRequest $request, $id)

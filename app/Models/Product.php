@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $table = 'products';
-    protected $fillable = ['id', 'name', 'content', 'category_id'];
+    protected $fillable = ['name', 'content', 'category_id'];
     protected $primaryKey = 'id';
 
-    public function getAll()
+    public function category()
     {
-        return $this->all();
+        return $this->belongsTo(Category::class);
     }
 }
